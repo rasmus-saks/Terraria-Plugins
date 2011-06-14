@@ -1,0 +1,8 @@
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\TerraEdit.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\TerraEdit.pdb
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\TerraEdit\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\TerraEdit\obj\Debug\TerraEdit.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\TerraEdit\obj\Debug\TerraEdit.pdb
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\TerraEdit\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\TerraEdit\obj\Debug\TerraEdit.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\TerraEdit\obj\Debug\TerraEdit.pdb

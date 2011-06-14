@@ -1,0 +1,5 @@
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\bAdmin\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\bAdmin.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\bAdmin.pdb
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\bAdmin\obj\Debug\bAdmin.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\bAdmin\obj\Debug\bAdmin.pdb

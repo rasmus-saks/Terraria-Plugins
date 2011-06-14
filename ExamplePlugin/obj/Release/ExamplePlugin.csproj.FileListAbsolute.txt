@@ -1,0 +1,9 @@
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\ExamplePlugin\bin\Release\ExamplePlugin.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\ExamplePlugin\bin\Release\ExamplePlugin.pdb
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\ExamplePlugin\bin\Release\Terraria_Server.exe
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\ExamplePlugin\bin\Release\Terraria_Server.Plugins.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\ExamplePlugin\bin\Release\Terraria_Server.Plugins.pdb
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\ExamplePlugin\bin\Release\Terraria_Server.pdb
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\ExamplePlugin\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\ExamplePlugin\obj\Release\ExamplePlugin.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\ExamplePlugin.dll

@@ -1,0 +1,5 @@
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\TerraGuard\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\TerraGuard.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\TerraGuard.pdb
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\TerraGuard\obj\Release\TerraGuard.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\TerraGuard\obj\Release\TerraGuard.pdb

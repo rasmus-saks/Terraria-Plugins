@@ -1,0 +1,5 @@
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\Permissions\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\Permissions.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Terraria-s-Dedicated-Server-Mod\Terraria_Server\bin\Release\Plugins\Permissions.pdb
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\Permissions\obj\Debug\Permissions.dll
+C:\Users\Bogeyman\Documents\Visual Studio 2010\Projects\Terraria-Server\Plugins\Permissions\obj\Debug\Permissions.pdb

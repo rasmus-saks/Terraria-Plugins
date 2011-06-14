@@ -1,0 +1,7 @@
+<Modules>
+  <Module PersistentId="E1440ADF-F66F-4D8D-94C8-09C5CEDFC4CA" ModuleId="bAdmin" />
+  <Module PersistentId="989B1D50-DEE6-420E-B242-4CF4889946D8" ModuleId="Permissions" />
+  <Module PersistentId="59918009-6306-4A10-9E1C-3FB0166E4F9C" ModuleId="ExamplePlugin" />
+  <Module PersistentId="3197B628-E3B2-42CA-9721-3E1A5F6F751F" ModuleId="TerraGuard" />
+  <Module PersistentId="FE2F80B3-8753-4DB4-B88B-E598C13A1855" ModuleId="TerraEdit" />
+</Modules>
