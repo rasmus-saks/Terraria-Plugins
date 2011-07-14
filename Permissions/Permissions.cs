@@ -76,6 +76,7 @@ namespace Permissions
             {
                 SendAllMessage("<" + pname + "> " + message, 255f, 240f, 20f);
             }
+            Event.Cancelled = true;
             return;
         }
         public void SendAllMessage(string message, float Red, float Green, float Blue)
