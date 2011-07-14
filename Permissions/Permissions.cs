@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml;
 using Terraria_Server;
 using Terraria_Server.Commands;
+using Terraria_Server.Events;
 using Terraria_Server.Plugin;
 
 
@@ -37,9 +38,14 @@ namespace Permissions
 			Description = "Plugin for easy permissions";
 			Author = "bogeymanEST";
 			Version = "1.0";
+		    TDSMBuild = 24;
+
 			Console.WriteLine("Initializing permissions...");
 			PermissionManager.LoadPermissions();
 			Console.WriteLine("Done!");
+
+		    registerHook(Hooks.PLAYER_CHAT);
+
 		}
 
 		public override void Enable()
@@ -52,10 +58,30 @@ namespace Permissions
 			
 		}
 
-		public override string Name { get; set; }
-		public override string Description { get; set; }
-		public override string Author { get; set; }
-		public override string Version { get; set; }
+        public override void onPlayerChat(MessageEvent Event)
+        {
+            var player = ((Player) Event.Sender).whoAmi;
+            var pname = ((Player) Event.Sender).Name;
+            var message = Event.Message;
+            Console.WriteLine("<" + Server + "> " + message); //Displays chat in the console.
+            try
+            {
+                SendAllMessage(
+                  "<" + PermissionManager.FindPlayer(player).GetPrefix() + pname + "> " + message,
+                  PermissionManager.FindPlayer(player).GetColor()[0],
+                  PermissionManager.FindPlayer(player).GetColor()[1],
+                  PermissionManager.FindPlayer(player).GetColor()[2]);
+            }
+            catch (Exception)
+            {
+                SendAllMessage("<" + pname + "> " + message, 255f, 240f, 20f);
+            }
+            return;
+        }
+        public void SendAllMessage(string message, float Red, float Green, float Blue)
+        {
+            NetMessage.SendData(25, -1, -1, message, 255, Red, Green, Blue);
+        }
 	}
 	public static class PermissionManager
 	{
@@ -296,9 +322,9 @@ namespace Permissions
 			}
 			Console.WriteLine(split[1] + (HasPermission(split[1], split[2]) ? " has" : " doesn't have") + " permissions for " + split[2]);
 		}*/
-		public static bool HasPermission(Sender sender, string node)
+		public static bool HasPermission(ISender sender, string node)
 		{
-			return sender.getName() == "CONSOLE" || Players.Find(item => item.Name == sender.getName()).HasPermission(node);
+			return sender.Name == "CONSOLE" || Players.Find(item => item.Name == sender.Name).HasPermission(node);
 		}
 
 		public static bool HasPermission(string name, string node)
@@ -307,11 +333,11 @@ namespace Permissions
 		}
 		public static bool HasPermission(int player, string node)
 		{
-			return Players.Find(item => item.Name == Program.server.getPlayerList()[player].name).HasPermission(node);
+			return Players.Find(item => item.Name == Program.server.PlayerList[player].Name).HasPermission(node);
 		}
 		public static PlayerPermissions FindPlayer(int player)
 		{
-			return Players.Find(item => item.Name == Program.server.getPlayerList()[player].getName());
+            return Players.Find(item => item.Name == Program.server.PlayerList[player].Name);
 		}
 	}
 	public class PlayerPermissions

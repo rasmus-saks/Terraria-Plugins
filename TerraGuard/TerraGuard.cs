@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using Permissions;
 using Terraria_Server;
+using Terraria_Server.Events;
+using Terraria_Server.Misc;
 using Terraria_Server.Plugin;
 using System.IO;
 using System.Xml;
@@ -14,10 +15,6 @@ namespace TerraGuard
 {
 	public class TerraGuard : Plugin
 	{
-		public override string Name { get; set; }
-		public override string Version { get; set; }
-		public override string Author { get; set; }
-		public override string Description { get; set; }
 
 		public static List<Region> Regions = new List<Region>();
 		public TerraEdit.TerraEdit tePlug;
@@ -30,16 +27,13 @@ namespace TerraGuard
 			bool found = false;
 			TerraEdit.TerraEdit ret = null;
 			Console.WriteLine("Hooking into TerraEdit...");
-			foreach (Plugin plug in Program.server.getPluginManager().pluginList)
-			{
-				if (plug.Name == "TerraEdit")
-				{
-					Console.WriteLine("Hooked into TerraEdit!");
-					ret = (TerraEdit.TerraEdit)plug;
-					found = true;
-				}
-			}
-			if (!found) Console.WriteLine("Could not find TerraEdit!");
+		    var plug = Program.server.PluginManager.getPlugin("TerraEdit");
+            if (plug != null)
+            {
+                Console.WriteLine("Hooked into TerraEdit!");
+                ret = (TerraEdit.TerraEdit) plug;
+            }
+		    else Console.WriteLine("Could not find TerraEdit!");
 			return ret;
 		}
 
@@ -49,8 +43,10 @@ namespace TerraGuard
 			Version = "0.3";
 			Author = "bogeymanEST";
 			Description = "Protection system for Terraria";
+		    TDSMBuild = 24;
+
 			registerHook(Hooks.PLAYER_COMMAND);
-			registerHook(Hooks.TILE_BREAK);
+			registerHook(Hooks.PLAYER_TILECHANGE);
 			registerHook(Hooks.PLAYER_CHEST);
 			Console.WriteLine("Loading TerraGuard version " + Version);
 			tePlug = HookIntoTerraEdit();
@@ -167,17 +163,17 @@ namespace TerraGuard
 
 		public override void onPlayerCommand(PlayerCommandEvent Event)
 		{
-			int player = ((Player)Event.getSender()).whoAmi;
-			string command = Event.getMessage();
+			int player = ((Player)Event.Sender).whoAmi;
+			string command = Event.Message;
 			string[] split = command.Split(' ');
 			split[0] = split[0].ToLower();
-			var sender = Event.getSender();
+			var sender = Event.Sender;
 			if(split.Length > 1) split[1] = split[1].ToLower();
 			if (split[0] == "/region")
 			{
 				if(split[1] == "define")
 				{
-					Event.setCancelled(true);
+					Event.Cancelled = true;
 					if (!PermissionManager.HasPermission(player, "terraguard.region.define"))
 					{
 						sender.sendMessage("You don't have enough permissions!");
@@ -210,27 +206,27 @@ namespace TerraGuard
 			}
 		}
 
-		public override void onTileBreak(Terraria_Server.Events.TileBreakEvent Event)
+		public override void onPlayerTileChange(PlayerTileChangeEvent Event)
 		{
-			int player = ((Player)Event.getSender()).whoAmi;
-			var region = IsPointInRegion(Event.getPos());
+			int player = ((Player)Event.Sender).whoAmi;
+			var region = IsPointInRegion(Event.Position);
 			if (region != null && !IsPlayerRegionMember(player, region))
 			{
-				Event.getSender().sendMessage("This area is protected!");
-				Event.setCancelled(true);
+				Event.Sender.sendMessage("This area is protected!");
+				Event.Cancelled = true;
 				return;
 			}
 			return;
 
 		}
-		public override void onPlayerOpenChest(Terraria_Server.Events.ChestOpenEvent Event)
+		public override void onPlayerOpenChest(PlayerChestOpenEvent Event)
 		{
-			int player = ((Player)Event.getSender()).whoAmi;
-			var region = IsPointInRegion(new Vector2(Main.chest[Event.getChestID()].x, Main.chest[Event.getChestID()].y));
+			int player = ((Player)Event.Sender).whoAmi;
+			var region = IsPointInRegion(new Vector2(Main.chest[Event.ID].x, Main.chest[Event.ID].y));
 			if (region != null && !IsPlayerRegionMember(player, region))
 			{
-				Event.getSender().sendMessage("This area is protected!");
-				Event.setCancelled(true);
+				Event.Sender.sendMessage("This area is protected!");
+				Event.Cancelled = true;
 				return;
 			}
 		}
@@ -282,7 +278,7 @@ namespace TerraGuard
 		/// <returns>Whether the player is a member of any of the regions</returns>
 		public bool IsPlayerRegionMember(int player, List<Region> regions)
 		{
-			return IsPlayerRegionMember(Program.server.getPlayerList()[player].getName(), regions);
+			return IsPlayerRegionMember(Program.server.PlayerList[player].Name, regions);
 		}
 		/// <summary>
 		/// Checks whether a player is a member of any region in a list of regions
@@ -317,7 +313,7 @@ namespace TerraGuard
 		/// <returns>Whether the player is a member of the region</returns>
 		public bool IsPlayerRegionMember(int player, Region region)
 		{
-			return IsPlayerRegionMember(Program.server.getPlayerList()[player].getName(), region);
+			return IsPlayerRegionMember(Program.server.PlayerList[player].Name, region);
 		}
 
 		public override void Disable()

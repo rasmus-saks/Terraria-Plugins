@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Terraria_Server;
-using Terraria_Server.Plugin;
 using Terraria_Server.Events;
+using Terraria_Server.Misc;
+using Terraria_Server.Plugin;
 using Permissions;
 
 namespace TerraEdit
@@ -15,11 +16,6 @@ namespace TerraEdit
 		public readonly Dictionary<int, bool> Waiting1 = new Dictionary<int, bool>();
 		public readonly Dictionary<int, bool> Waiting2 = new Dictionary<int, bool>();
 		public readonly Dictionary<int, List<Action>> Actions = new Dictionary<int, List<Action>>();
-
-		public override string Name { get; set; }
-		public override string Description { get; set; }
-		public override string Version { get; set; }
-		public override string Author { get; set; }
 
 		//private Vector2[] Pos1 = new Vector2[Statics.PlayerCap];
 		//private Vector2[] Pos2 = new Vector2[Statics.PlayerCap];
@@ -35,9 +31,11 @@ namespace TerraEdit
 			Version = "0.3";
 			Author = "bogeymanEST";
 			Description = "Terraria world editor";
+            TDSMBuild = 24;
 			registerHook(Hooks.PLAYER_COMMAND);
-			registerHook(Hooks.TILE_BREAK);
+			registerHook(Hooks.PLAYER_TILECHANGE);
 			Console.WriteLine("Loading TerraEdit version " + Version);
+
 		}
 
 		public override void Enable()
@@ -50,16 +48,16 @@ namespace TerraEdit
 
 		}
 
-		public override void  onPlayerCommand(PlayerCommandEvent Event)
+		public override void onPlayerCommand(PlayerCommandEvent Event)
 		{
-			int player = ((Player) Event.getSender()).whoAmi;
-			string command = Event.getMessage();
+			int player = ((Player) Event.Sender).whoAmi;
+			string command = Event.Message;
 			string[] split = command.Split(' ');
 			split[0] = split[0].ToLower();
-			var sender = Event.getSender();
+			var sender = Event.Sender;
 			if (split[0] == "//pos1" || split[0] == "//p1")
 			{
-				Event.setCancelled(true);
+				Event.Cancelled = true;
 				if (!PermissionManager.HasPermission(player, "terraedit.selection"))
 				{
 					sender.sendMessage("You don't have enough permissions!");
@@ -74,7 +72,7 @@ namespace TerraEdit
 			}
 			if (split[0] == "//pos2" || split[0] == "//p2")
 			{
-				Event.setCancelled(true);
+				Event.Cancelled = true;
 				if (!PermissionManager.HasPermission(player, "terraedit.selection"))
 				{
 					sender.sendMessage("You don't have enough permissions!");
@@ -89,7 +87,7 @@ namespace TerraEdit
 			}
 			if (split[0] == "//set")
 			{
-				Event.setCancelled(true);
+				Event.Cancelled = true;
 				if (!PermissionManager.HasPermission(player, "terraedit.set"))
 				{
 					sender.sendMessage("You don't have enough permissions!");
@@ -142,7 +140,7 @@ namespace TerraEdit
 			}
 			if (split[0] == "//disc")
 			{
-				Event.setCancelled(true);
+				Event.Cancelled = true;
 				if (!PermissionManager.HasPermission(player, "terraedit.disc"))
 				{
 					sender.sendMessage("You don't have enough permissions!");
@@ -206,7 +204,7 @@ namespace TerraEdit
 			}
 			if (split[0] == "//replace")
 			{
-				Event.setCancelled(true);
+				Event.Cancelled = true;
 				if (!PermissionManager.HasPermission(player, "terraedit.replace"))
 				{
 					sender.sendMessage("You don't have enough permissions!");
@@ -261,7 +259,7 @@ namespace TerraEdit
 				{
 					for (int j = lowY; j <= highY; j++)
 					{
-						if(Main.tile[i,j].type == from) action.SetBlock(i, j, to);
+						if(Main.tile.At(i,j).Type == from) action.SetBlock(i, j, to);
 					}
 				}
 				int c = action.Do();
@@ -274,7 +272,7 @@ namespace TerraEdit
 			}
 			if (split[0] == "//undo")
 			{
-				Event.setCancelled(true);
+				Event.Cancelled = true;
 				if (!PermissionManager.HasPermission(player, "terraedit.undo"))
 				{
 					sender.sendMessage("You don't have enough permissions!");
@@ -292,15 +290,15 @@ namespace TerraEdit
 					//World world = Program.server.getWorld();
 					if (kvp.Value.StartType == -1)
 					{
-						Main.tile[X, Y].active = false;
+                        Main.tile.At(X, Y).SetActive(false);
 						NetMessage.SendTileSquare(-1, X, Y, 1);
 					}
 					else
 					{
 						/*WorldGen.KillTile(X, Y, world, false, false, true);
 						WorldGen.PlaceTile(X, Y, world, kvp.Value.StartType, false, true);*/
-						Main.tile[X, Y].active = true;
-						Main.tile[X, Y].type = (byte)kvp.Value.StartType;
+                        Main.tile.At(X, Y).SetActive(true);
+                        Main.tile.At(X, Y).SetType((byte)kvp.Value.StartType);
 						NetMessage.SendTileSquare(-1, X, Y, 1);
 					}
 				}
@@ -317,28 +315,28 @@ namespace TerraEdit
 			return ((Pos1.ContainsKey(player) && Pos2.ContainsKey(player)) && Pos1[player] != null) && Pos2[player] != null;
 		}
 
-		public override void  onTileBreak(TileBreakEvent Event)
+		public override void onPlayerTileChange(PlayerTileChangeEvent Event)
 		{
-			int player = ((Player)Event.getSender()).whoAmi;
-			var sender = Event.getSender();
+			int player = ((Player)Event.Sender).whoAmi;
+			var sender = Event.Sender;
 			if (Waiting1.ContainsKey(player) && Waiting1[player])
 			{
-				if (!Pos1.ContainsKey(player)) Pos1.Add(player, Event.getPos());
-				Pos1[player] = Event.getPos();
-				sender.sendMessage("Position 1 set (" + Event.getPos().X + ", " + Event.getPos().Y + ")");
+                if (!Pos1.ContainsKey(player)) Pos1.Add(player, Event.Position);
+			    Pos1[player] = Event.Position;
+                sender.sendMessage("Position 1 set (" + Event.Position.X + ", " + Event.Position.Y + ")");
 				Waiting1[player] = false;
 				Waiting2[player] = false;
-				Event.setCancelled(true);
+				Event.Cancelled = true;
 				return;
 			}
 			if (Waiting1.ContainsKey(player) && Waiting2[player])
 			{
-				if (!Pos2.ContainsKey(player)) Pos2.Add(player, Event.getPos());
-				Pos2[player] = Event.getPos();
-				sender.sendMessage("Position 2 set (" + Event.getPos().X + ", " + Event.getPos().Y + ")");
+                if (!Pos2.ContainsKey(player)) Pos2.Add(player, Event.Position);
+                Pos2[player] = Event.Position;
+                sender.sendMessage("Position 2 set (" + Event.Position.X + ", " + Event.Position.Y + ")");
 				Waiting1[player] = false;
 				Waiting2[player] = false;
-				Event.setCancelled(true);
+				Event.Cancelled = true;
 				return;
 			}
 			return;
@@ -501,8 +499,8 @@ namespace TerraEdit
 				int typ;
 				try
 				{
-					act = Main.tile[X, Y].active;
-					typ = Main.tile[X, Y].type;
+					act = Main.tile.At(X, Y).Active;
+					typ = Main.tile.At(X, Y).Type;
 				}
 				catch (Exception)
 				{
@@ -523,17 +521,17 @@ namespace TerraEdit
 				int changeType = kvp.Value.ChangeType;
 				try
 				{
-					if (changeType == Main.tile[X, Y].type && Main.tile[X, Y].active) continue;
+                    if (changeType == Main.tile.At(X, Y).Type && Main.tile.At(X, Y).Active) continue;
 				}
 				catch (Exception)
 				{
 					continue;
 				}
-				Main.tile[X, Y].active = false;
+                Main.tile.At(X, Y).SetActive(false);
 				if (changeType != -1)
 				{
-					Main.tile[X, Y].active = true;
-					Main.tile[X, Y].type = (byte)changeType;
+                    Main.tile.At(X, Y).SetActive(true);
+                    Main.tile.At(X, Y).SetType((byte)changeType);
 				} 
 				NetMessage.SendTileSquare(-1, X, Y, 1);
 				count++;
